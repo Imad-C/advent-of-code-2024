@@ -46,7 +46,7 @@ with open("day_2/input.txt", "r") as f:
         all_reports.append(report)
  
 
-# Task 1: assess each report for saftey
+## Task 1: assess each report for saftey
 safe_reports = 0
 for report in all_reports:
     safe = True # default is safe, will check below
@@ -58,9 +58,9 @@ for report in all_reports:
     if safe: 
         safe_reports += 1
 
-print(f'Task 1: {safe_reports}')
+print(f'Task 1: {safe_reports}') # 585
 
-# Task 2: with saftey dampener
+## Task 2: with saftey dampener
 # generate a list of lists 
 # of all possible combinations for each report
 all_reports_combos = []
@@ -91,4 +91,4 @@ for report_combo in all_reports_combos:
     if combo_safe == True:
         safe_reports += 1
 
-print(f'Task 2: {safe_reports}')
+print(f'Task 2: {safe_reports}') # 626
