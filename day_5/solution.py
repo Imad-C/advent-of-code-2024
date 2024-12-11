@@ -10,22 +10,17 @@ def get_update_rules(update, rule_dict):
     return update_rules
 
 
-def check_page(page, page_rules):
-    for rule in page_rules:
-        if page >= rule:
-            # print(page, 'should be less than', rule)
-            return False
+def check_page(page, update, page_rules):
+    page_idx = update.index(page)
+    if any([rule in page_rules for rule in update[:page_idx]]):
+        return False
     return True
 
 
 def check_update(update, update_rules):
     for page in update:
-        page_idx = update.index(page)
-        if any([rule in update_rules[page] for rule in update[:page_idx]]):
+        if check_page(page, update, update_rules[page]) == False:
             return False
-        # if check_page(page, update_rules[page]) == False:
-        #     return False
-    # print('unbroken')
     return True
 
 
@@ -51,7 +46,6 @@ all_correct_updates = []
 for update in all_updates:
     update_rules = get_update_rules(update, rule_dict)
     if check_update(update, update_rules):
-        # print('UNBROKEN')
         all_correct_updates.append(update)
 
 midpoint_total = 0
@@ -60,3 +54,20 @@ for update in all_correct_updates:
 print(f'Task 1: {midpoint_total}') # 6384
 
 
+## Task 2
+all_corrected_updates = []
+for update in all_updates:
+    update_rules = get_update_rules(update, rule_dict)
+    if not check_update(update, update_rules):
+        for page in update:
+            while not check_page(page, update, update_rules[page]):
+                page_idx = update.index(page)
+                prev_idx = page_idx - 1
+                update[page_idx], update[prev_idx] = update[prev_idx], update[page_idx]
+                
+        all_corrected_updates.append(update)
+
+midpoint_total = 0
+for update in all_corrected_updates:
+    midpoint_total += update[int(len(update)/2)]
+print(f'Task 2: {midpoint_total}') # 5353
